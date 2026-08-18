@@ -30,7 +30,7 @@ jobs:
           pip install ".[dev]" pytest-cov
       - name: Run Code Formatting Check
         run: |
-          black --check .
+          black --check --fast .
 
       - name: Run Linting
         run: |
