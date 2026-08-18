@@ -56,7 +56,9 @@ def get_profile(profile_id: str):
 def update_profile(profile_id: str, payload: ProfileUpdateRequest):
     profile = service.update_profile(profile_id, payload.model_dump(exclude_none=True))
     if profile is None:
-        raise HTTPException(status_code=404, detail="Profile not found or cannot be updated")
+        raise HTTPException(
+            status_code=404, detail="Profile not found or cannot be updated"
+        )
     return profile
 
 
@@ -78,11 +80,16 @@ def list_profile_events(profile_id: str):
 def profile_audit_review(profile_id: str):
     audit = service.get_profile_audit(profile_id)
     if audit is None:
-        raise HTTPException(status_code=404, detail="Profile not found or no audit available")
+        raise HTTPException(
+            status_code=404, detail="Profile not found or no audit available"
+        )
     return audit
 
 
 @router.post("/seed")
 def reset_demo_seed_data():
     seeded = service.reset_demo_data()
-    return {"status": "seeded", "profiles": [profile.model_dump() for profile in seeded]}
+    return {
+        "status": "seeded",
+        "profiles": [profile.model_dump() for profile in seeded],
+    }

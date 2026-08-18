@@ -77,7 +77,9 @@ class CustomerProfileService:
     def get_profile(self, profile_id: str) -> Optional[CustomerProfile]:
         return self.repository.get(profile_id)
 
-    def update_profile(self, profile_id: str, changes: dict) -> Optional[CustomerProfile]:
+    def update_profile(
+        self, profile_id: str, changes: dict
+    ) -> Optional[CustomerProfile]:
         profile = self.repository.get(profile_id)
         if not profile:
             return None
@@ -94,8 +96,12 @@ class CustomerProfileService:
         profile.updated_at = datetime.utcnow()
         return self.repository.save(profile)
 
-    def list_profiles(self, status: str | None = None, demographic_segment: str | None = None) -> list[CustomerProfile]:
-        return self.repository.list_profiles(status=status, demographic_segment=demographic_segment)
+    def list_profiles(
+        self, status: str | None = None, demographic_segment: str | None = None
+    ) -> list[CustomerProfile]:
+        return self.repository.list_profiles(
+            status=status, demographic_segment=demographic_segment
+        )
 
     def archive_profile(self, profile_id: str) -> Optional[CustomerProfile]:
         profile = self.repository.get(profile_id)
@@ -104,14 +110,24 @@ class CustomerProfileService:
         profile.mark_archived()
         saved = self.repository.save(profile)
         # create lifecycle event
-        event = ProfileEvent(id=str(uuid.uuid4()), profile_id=profile_id, event_type="archived", changed_by="system")
+        event = ProfileEvent(
+            id=str(uuid.uuid4()),
+            profile_id=profile_id,
+            event_type="archived",
+            changed_by="system",
+        )
         self.repository.save_event(event)
         return saved
 
     def delete_profile(self, profile_id: str) -> bool:
         deleted = self.repository.delete(profile_id)
         if deleted:
-            event = ProfileEvent(id=str(uuid.uuid4()), profile_id=profile_id, event_type="removed", changed_by="system")
+            event = ProfileEvent(
+                id=str(uuid.uuid4()),
+                profile_id=profile_id,
+                event_type="removed",
+                changed_by="system",
+            )
             self.repository.save_event(event)
         return deleted
 
@@ -123,11 +139,13 @@ class CustomerProfileService:
         # Return a reviewable representation
         audit = []
         for e in events:
-            audit.append({
-                "id": e.id,
-                "event_type": e.event_type,
-                "timestamp": e.timestamp.isoformat(),
-                "changed_by": e.changed_by,
-                "notes": e.notes,
-            })
+            audit.append(
+                {
+                    "id": e.id,
+                    "event_type": e.event_type,
+                    "timestamp": e.timestamp.isoformat(),
+                    "changed_by": e.changed_by,
+                    "notes": e.notes,
+                }
+            )
         return audit

@@ -26,12 +26,17 @@ class CustomerProfileRepository:
                 return profile
         return None
 
-    def list_profiles(self, status: str | None = None, demographic_segment: str | None = None) -> list[CustomerProfile]:
+    def list_profiles(
+        self, status: str | None = None, demographic_segment: str | None = None
+    ) -> list[CustomerProfile]:
         results = []
         for profile in self._profiles.values():
             if status and profile.status != status:
                 continue
-            if demographic_segment and profile.demographic_segment != demographic_segment:
+            if (
+                demographic_segment
+                and profile.demographic_segment != demographic_segment
+            ):
                 continue
             results.append(profile)
         return results
