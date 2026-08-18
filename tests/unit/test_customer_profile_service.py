@@ -50,7 +50,9 @@ def test_update_demographic_fields():
     }
     created = service.create_profile(payload)
 
-    updated = service.update_profile(created.id, {"demographic_segment": "enterprise", "preferred_language": "fr"})
+    updated = service.update_profile(
+        created.id, {"demographic_segment": "enterprise", "preferred_language": "fr"}
+    )
     assert updated is not None
     assert updated.demographic_segment == "enterprise"
     assert updated.preferred_language == "fr"
