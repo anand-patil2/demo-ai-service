@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Linting
         run: |
-          flake8 src tests
+          python -m flake8 --max-line-length=88 src tests
 
       - name: Run Tests (with coverage)
         run: |
