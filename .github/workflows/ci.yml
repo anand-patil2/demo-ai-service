@@ -36,11 +36,7 @@ jobs:
         run: |
           flake8 src tests
 
-      - name: Run Unit Tests
-        run: |
-          pytest
-
-      - name: Generate Coverage Report
+      - name: Run Tests (with coverage)
         run: |
           pytest --cov=src \
                  --cov-report=xml \
